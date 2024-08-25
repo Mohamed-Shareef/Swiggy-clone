@@ -1,56 +1,65 @@
-import React, { useEffect, useState, useCallback } from "react";
-import Shimmer from "./shimmer";
+// import React, { useEffect, useState, useCallback } from "react";
+import Shimmer from "./Shimmer";
 import { useParams } from "react-router-dom";
-import { Header_IMG, MENU_API, Menu_IMG } from "../mockdata";
-import "./restaurantmenu.css";
+import { Header_IMG } from "../utils/mockdata";
+
+import useRestaruantMenu from "../useRestaruantMenu";
+import { useState } from "react";
+import RestaurentCategorys from "./Rescatogery";
 
 const Restaurantmenu = () => {
-  const [resInfo, setResmenu] = useState(null);
+  // const [resInfo, setResmenu] = useState(null);
+  const [showIndex, setshowIndex] = useState(null);
   const { resId } = useParams();
-  console.log(resInfo);
-  const fetchMenu = useCallback(async () => {
-    try {
-      const response = await fetch(
-        `${MENU_API}${resId}&catalog_qa=undefined&submitAction=ENTER`
-      );
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const json = await response.json();
-      setResmenu(json.data);
-    } catch (error) {
-      console.error("Fetching menu failed: ", error);
-    }
-  }, [resId]);
-
-  useEffect(() => {
-    fetchMenu();
-  }, [fetchMenu]);
+  const resInfo = useRestaruantMenu(resId);
 
   if (resInfo === null) return <Shimmer />;
 
   const { name, cuisines, costForTwoMessage, cloudinaryImageId } =
     resInfo?.cards[2]?.card?.card?.info || {};
 
-  const itemCards =
-    resInfo?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards[1]?.card?.card
-      ?.itemCards || [];
-  console.log(itemCards);
-  return (
-    <div className="menu-container">
-      <h1>{name}</h1>
-      <img
-        style={{
-          width: "200px",
-        }}
-        src={Header_IMG + cloudinaryImageId}
-      />
+  // const itemCards =
+  //   resInfo?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards[1]?.card?.card
+  //     ?.itemCards || [];
 
-      <p>
+  const category =
+    resInfo?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards.filter(
+      (c) =>
+        c.card?.["card"]?.["@type"] ===
+        "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory"
+    );
+
+  // console.log(category);
+
+  return (
+    <div className="text-center">
+      <h1 className="m-2 font-bold text-xl">{name}</h1>
+      <div className="w-6/12 mx-[590px]">
+        <img
+          alt="CloudnaryID"
+          className="flex justify-center w-[200px]"
+          src={Header_IMG + cloudinaryImageId}
+        />
+      </div>
+
+      <p className="mt-3">
         {cuisines?.join(", ")} - {costForTwoMessage}
       </p>
       <h2>Menus</h2>
-      <h1>Recommended</h1>
+      <h1>
+        {category.map((cat, index) => (
+          // console.log(cat)
+          <RestaurentCategorys
+            key={cat?.card?.card?.title}
+            data={cat?.card?.card}
+            showItem={index === showIndex}
+            setshowIndex={() =>
+              setshowIndex(index === showIndex ? null : index)
+            }
+          />
+        ))}
+      </h1>
+      {/* <h1>Recommended</h1>
       <ul>
         {itemCards.map((res) => (
           <h3
@@ -74,7 +83,7 @@ const Restaurantmenu = () => {
             />
           </h3>
         ))}
-      </ul>
+      </ul> */}
     </div>
   );
 };
