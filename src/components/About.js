@@ -1,4 +1,10 @@
+import { useSelector } from "react-redux";
+import ItemList from "./ItemList";
+
 const About = () => {
+  const aboutus = useSelector((store) => store.aboutus.items);
+  console.log(aboutus);
+
   return (
     <div>
       <h1>About US</h1>
@@ -43,6 +49,9 @@ const About = () => {
         presence due to its extensive network, user-friendly app, and innovative
         services
       </p>
+      <div>
+        <ItemList Item={aboutus} />
+      </div>
     </div>
   );
 };

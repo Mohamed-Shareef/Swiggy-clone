@@ -20,7 +20,7 @@ const useRestaruantMenu = (resId) => {
 
   useEffect(() => {
     fetching();
-  },[]);
+  }, []);
 
   const fetching = async () => {
     const data = await fetch(MENU_API + resId);

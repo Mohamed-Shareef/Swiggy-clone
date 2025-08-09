@@ -34,10 +34,10 @@ const Restaurantmenu = () => {
   return (
     <div className="text-center">
       <h1 className="m-2 font-bold text-xl">{name}</h1>
-      <div className="w-6/12 mx-[590px]">
+      <div className="mx-auto w-[200px]">
         <img
           alt="CloudnaryID"
-          className="flex justify-center w-[200px]"
+          className="w-full object-contain"
           src={Header_IMG + cloudinaryImageId}
         />
       </div>
@@ -54,7 +54,7 @@ const Restaurantmenu = () => {
             data={cat?.card?.card}
             showItem={index === showIndex}
             setshowIndex={() =>
-              setshowIndex(index === showIndex ? null : index)
+              setshowIndex(index === showIndex ? false : index)
             }
           />
         ))}

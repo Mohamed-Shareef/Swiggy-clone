@@ -77,7 +77,7 @@ export const Body = () => {
             }}
           />
           <button
-            className="px-4 py-2 bg-blue-200 m-4 rounded-sm hover:text-white transition-all translate-x-2 capitalize"
+            className="px-4 py-2 bg-orange-600 m-4 rounded-sm hover:text-white transition-all translate-x-2 capitalize"
             onClick={() => {
               const filts = resname.filter((res) =>
                 res?.info.cuisines
@@ -93,7 +93,7 @@ export const Body = () => {
         </div>
         <div className="search-bar">
           <button
-            className="px-4 py-2 bg-blue-200 rounded-sm hover:text-white capitalize transition-all translate-x-2"
+            className="px-4 py-2 bg-orange-600 rounded-sm hover:text-white capitalize transition-all translate-x-2"
             onClick={() => {
               const fillters = resname.filter(
                 (res) => res.info.avgRating > 4.3

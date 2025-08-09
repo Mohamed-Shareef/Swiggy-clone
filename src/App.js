@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import ReactDOM from "react-dom/client";
 import "./App.css";
 import About from "./components/About";
@@ -12,15 +12,31 @@ import reportWebVitals from "./reportWebVitals";
 import Restaurantmenu from "./components/restaurentmenu";
 // import Grocery from "./components/Grocery";
 import { lazy, Suspense } from "react";
+import UserContex from "./utils/UserContex";
+import { Provider } from "react-redux";
+import appStore from "./utils/appStore";
+import Cartitem from "./components/Cartitem";
 
 const Grocery = lazy(() => import("./components/Grocery"));
 
 const App = () => {
+  const [userName, setuserName] = useState(0);
+
+  // useEffect(() => {
+  //   const Values = {
+  //     name: "mohamed",
+  //   };
+  //   setuserName(Values.name);
+  // }, []);
   return (
-    <div className="App">
-      <Header />
-      <Outlet />
-    </div>
+    <Provider store={appStore}>
+      <UserContex.Provider value={{ loggedINuser: userName, setuserName }}>
+        <div className="App">
+          <Header />
+          <Outlet />
+        </div>
+      </UserContex.Provider>
+    </Provider>
   );
 };
 
@@ -40,6 +56,10 @@ const appRouter = createBrowserRouter([
       {
         path: "/contact",
         element: <Contact />,
+      },
+      {
+        path: "/Cartitem",
+        element: <Cartitem />,
       },
       {
         path: "/restaurents/:resId",

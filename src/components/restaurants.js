@@ -1,9 +1,12 @@
-import React from "react";
+// import React, { useContext } from "react";
 import { IMG_URL } from "../utils/mockdata";
+// import UserContex from "../utils/UserContex";
 
 export const Restaurants = (props) => {
   const { resdata } = props;
   const { name, avgRating, cloudinaryImageId, sla, cuisines } = resdata?.info;
+  // const { loggedINuser } = useContext(UserContex);
+
   return (
     <div className="Restarunts-contain w-70  bg-gray-100 m-[17px] p-2 rounded-lg hover:bg-gray-200">
       <div className="image-card w-[200px]">
@@ -16,6 +19,7 @@ export const Restaurants = (props) => {
         <h4>{cuisines.join(" ")}</h4>
         <h4>{avgRating} rating</h4>
         <h4>{sla.deliveryTime} minutes</h4>
+        {/* <h4>{loggedINuser}</h4> */}
       </div>
     </div>
   );
