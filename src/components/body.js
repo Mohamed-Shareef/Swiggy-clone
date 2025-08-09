@@ -11,6 +11,27 @@ import ImageCard from "./Imagecard";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+
+export const PrevArrow = ({ className, style, onClick }) => (
+  <div
+    className={`${className} !flex items-center justify-center absolute -left-6 top-1/2 transform -translate-y-1/2 z-20 bg-black p-2 rounded-full shadow-lg hover:bg-black-200`}
+    style={{ ...style, display: "flex", backgroundColor: "black" }} // force visible
+    onClick={onClick}
+  >
+    <FaChevronLeft size={20} />
+  </div>
+);
+
+export const NextArrow = ({ className, style, onClick }) => (
+  <div
+    className={`${className} !flex items-center justify-center absolute -right-6 top-1/2 transform -translate-y-1/2 z-20 bg-black p-2 rounded-full shadow-lg hover:bg-black-200`}
+    style={{ ...style, display: "flex" }} // force visible
+    onClick={onClick}
+  >
+    <FaChevronRight size={20} />
+  </div>
+);
 
 export const Body = () => {
   const settings = {
@@ -19,6 +40,8 @@ export const Body = () => {
     speed: 500,
     slidesToShow: 5,
     slidesToScroll: 4,
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
   };
   // const [resname, setresname] = useState([]);
 
@@ -53,11 +76,12 @@ export const Body = () => {
   return resname.length === 0 ? (
     <Shimmer />
   ) : (
-    <div className="body-container  p-4 w-9/12 m-auto ">
+    <div className="body-container p-4 w-full sm:w-9/12 m-auto">
       <h1 className="font-Gilroy font-extrabold text-xl mt-2">
         What's on your mind?
       </h1>
-      <div className="w-5/4 m-auto shadow">
+
+      <div className="w-full m-auto shadow relative">
         <div className="mt-6">
           <Slider {...settings}>
             {filterImg.map((el) => (
@@ -66,18 +90,18 @@ export const Body = () => {
           </Slider>
         </div>
       </div>
-      <div className="search-contain flex items-center justify-between mt-20">
-        <div className="searchBox  ">
+
+      {/* Search Section */}
+      <div className="search-contain flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mt-20">
+        <div className="searchBox flex items-center gap-2">
           <input
             type="text"
-            className="m-2 w-[300px] border outline-none border-solid rounded-sm border-black px-2 py-2"
+            className="border outline-none border-solid rounded-sm border-black px-2 py-2 w-[300px] max-w-full"
             value={searchBox}
-            onChange={(e) => {
-              setSearchBox(e.target.value);
-            }}
+            onChange={(e) => setSearchBox(e.target.value)}
           />
           <button
-            className="px-4 py-2 bg-orange-600 m-4 rounded-sm hover:text-white transition-all translate-x-2 capitalize"
+            className="px-4 py-2 bg-orange-600 rounded-sm hover:text-white transition-all capitalize"
             onClick={() => {
               const filts = resname.filter((res) =>
                 res?.info.cuisines
@@ -91,9 +115,10 @@ export const Body = () => {
             search
           </button>
         </div>
+
         <div className="search-bar">
           <button
-            className="px-4 py-2 bg-orange-600 rounded-sm hover:text-white capitalize transition-all translate-x-2"
+            className="px-4 py-2 bg-orange-600 rounded-sm hover:text-white capitalize transition-all"
             onClick={() => {
               const fillters = resname.filter(
                 (res) => res.info.avgRating > 4.3
@@ -101,17 +126,18 @@ export const Body = () => {
               setFilterres(fillters);
             }}
           >
-            search top resturants
+            search top restaurants
           </button>
         </div>
       </div>
 
-      <div className="flex flex-wrap mt-5 ">
+      {/* Restaurant Cards */}
+      <div className="flex flex-wrap justify-center gap-4 mt-5">
         {filterRes.map((res) => (
           <Link
             className="linkchange"
             key={res.info.id}
-            to={"/restaurents/" + res.info.id || res.card.info.id}
+            to={"/restaurents/" + res.info.id}
           >
             {res.info.isOpen ? (
               <RestaurantsCards resdata={res} />
